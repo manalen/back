@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "patient")
+@Entity(name="Patient")
 public class Patient extends Utilisateur {
     private String Adresse;
     private long Age;
@@ -22,6 +22,24 @@ public class Patient extends Utilisateur {
         Age = age;
         this.numserie = numserie;
         this.cin=cin;
+        @OneToMany(
+                mappedBy = "Patient",
+                cascade = CascadeType.PERSIST,
+                fetch = FetchType.LAZY
+        )
+        private Set<Prescription> prescriptions;
+        @OneToMany(
+                mappedBy = "Patient",
+                cascade = CascadeType.PERSIST,
+                fetch = FetchType.LAZY
+        )
+        private Set<Analyse> analyses;
+        @OneToMany(
+                mappedBy = "Patient",
+                cascade = CascadeType.PERSIST,
+                fetch = FetchType.LAZY
+        )
+        private Set<Consultation> consultations;
     }
 
     public String getAdresse() {
